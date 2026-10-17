@@ -8,6 +8,7 @@
  * Run the function  setup()  once (see GUIDE.md) and it creates them for you.
  */
 
+var DATABASE_SPREADSHEET_ID = '1aXBAbSz1v1eUZBA7Yf-hU9EygPEQuB6Hq6h3WcfzuaQ';
 var DEFAULT_STORE_LOCATION = 'Koramangala, Bengaluru, Karnataka, India';
 var DEFAULT_STOCK = 20;
 var MAX_STOCK = 1000000;
@@ -27,13 +28,17 @@ function setProp_(key, value) {
 }
 
 /**
- * RUN THIS ONCE from the Apps Script editor (or `clasp run setup`).
- *  - creates the Google Sheet that is used as the database
- *  - creates the tabs / headers and seeds the 12 default products
+ * RUN THIS from the Apps Script editor after granting access to the database sheet.
+ *  - connects to the configured Google Sheet and creates its tabs / headers
+ *  - seeds the 12 default products when the Products tab is empty
  *  - creates ADMIN_JWT_SECRET, and default ADMIN_EMAIL / ADMIN_PASSWORD if you
  *    have not set them yet (CHANGE the password in Script Properties!)
  */
 function setup() {
+  setProp_('SPREADSHEET_ID', DATABASE_SPREADSHEET_ID);
+  _ss = null;
+  _schemaChecked = false;
+  _blobCache = null;
   if (!prop_('ADMIN_EMAIL')) setProp_('ADMIN_EMAIL', 'admin@gmail.com');
   if (!prop_('ADMIN_PASSWORD')) setProp_('ADMIN_PASSWORD', 'Admin@12345');
   if (!prop_('ADMIN_JWT_SECRET')) {

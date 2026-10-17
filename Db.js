@@ -30,7 +30,7 @@ var _blobCache = null;
 
 function ss_() {
   if (_ss) return _ss;
-  var id = prop_('SPREADSHEET_ID');
+  var id = DATABASE_SPREADSHEET_ID || prop_('SPREADSHEET_ID');
   if (id) {
     _ss = SpreadsheetApp.openById(id);
     return _ss;
